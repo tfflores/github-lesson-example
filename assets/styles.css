@@ -1,0 +1,169 @@
+:root {
+  --color-bg: #f7f5f2;
+  --color-surface: #ffffff;
+  --color-text: #23201d;
+  --color-muted: #6b635b;
+  --color-accent: #b4531f;
+  --color-border: #e2dcd4;
+  --radius: 10px;
+  --max-width: 46rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+  line-height: 1.65;
+}
+
+.wrap {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+.site-header {
+  background: var(--color-text);
+  color: var(--color-bg);
+  padding: 2.25rem 0;
+}
+
+.brand {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.tagline {
+  margin: 0.35rem 0 0;
+  color: #cdc5bb;
+  font-size: 0.95rem;
+}
+
+main {
+  padding: 2.5rem 1.25rem 3rem;
+}
+
+h1 {
+  font-size: 1.6rem;
+  margin-top: 0;
+}
+
+h2 {
+  font-size: 1.2rem;
+}
+
+a {
+  color: var(--color-accent);
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.post-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.post-item {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.4rem;
+}
+
+.post-item h2 {
+  margin: 0 0 0.4rem;
+}
+
+.post-item p {
+  margin: 0;
+  color: var(--color-muted);
+}
+
+.post-item--soon {
+  border-style: dashed;
+  background: transparent;
+}
+
+.post-meta {
+  display: block;
+  margin-top: 0.6rem;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.about {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.about p {
+  color: var(--color-muted);
+}
+
+article h1 {
+  font-size: 1.9rem;
+  margin-bottom: 0.25rem;
+}
+
+article h2 {
+  margin-top: 2rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.beam-use {
+  background: var(--color-surface);
+  border-left: 3px solid var(--color-accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 0.75rem 1rem;
+  margin: 0.75rem 0 0;
+}
+
+.beam-use strong {
+  display: block;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-accent);
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.site-footer {
+  border-top: 1px solid var(--color-border);
+  padding: 1.5rem 0;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
+.site-footer p {
+  margin: 0;
+}
