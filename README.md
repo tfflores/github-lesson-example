@@ -120,6 +120,18 @@ npx --yes prettier@3 --write .
 Este es el recorrido completo, y es el mismo ejercicio que se hace en la
 capacitación. Cada paso toca una pieza distinta de GitHub.
 
+> **Durante la capacitación: haz los pasos 1 al 8. Detente ahí.**
+>
+> Los pasos **9 (mergear)** y **10 (verificar el despliegue)** los ejecuta en
+> vivo quien dicta la charla, sobre un PR de ejemplo y proyectando la pantalla.
+> No es una restricción técnica —con permiso de escritura sí podrías mergear—
+> sino una de coordinación: `main` es una sola, y si varias personas mergean a
+> la vez los despliegues de Pages se encolan y se cancelan entre ellos por el
+> `concurrency: pages` del workflow. Nadie llega a ver el resultado.
+>
+> Tu PR queda abierto y en verde al terminar el paso 8: eso **es** el ejercicio
+> completo. Los dos últimos pasos se muestran, no se practican.
+
 ### 1. Crea una rama desde `main`
 
 `main` está protegida por un ruleset: no acepta pushes directos. Todo cambio
@@ -234,7 +246,14 @@ Si queda en rojo, casi siempre es formato: corre
 `npx --yes prettier@3 --write .`, commitea y pushea de nuevo. El check se vuelve
 a ejecutar solo con cada push.
 
-### 9. Mergea
+**Si estás en la capacitación, este es tu último paso.** Deja el PR abierto y en
+verde, y avisa. Los dos que siguen se muestran en pantalla.
+
+---
+
+### 9. Mergea — 🖥️ demostración en vivo
+
+> Lo ejecuta quien dicta la capacitación. Míralo, no lo corras.
 
 El botón de merge sigue bloqueado hasta que `Lint` esté verde — así lo exige el
 ruleset de `main`.
@@ -243,7 +262,18 @@ ruleset de `main`.
 gh pr merge --squash --delete-branch
 ```
 
-### 10. Verifica el despliegue
+Qué observar mientras pasa:
+
+- El botón de merge estaba gris y se habilita solo cuando el check pasa a verde.
+- `--squash` convierte todos los commits de la rama en uno solo sobre `main`,
+  así que el historial queda con una línea por PR en lugar de con los intentos
+  intermedios.
+- `--delete-branch` borra la rama remota: ya cumplió su función.
+
+### 10. Verifica el despliegue — 🖥️ demostración en vivo
+
+> También en pantalla. Cualquiera puede _ver_ los runs porque el repo es
+> público, pero conviene seguirlo una sola vez y juntos.
 
 El merge dispara el workflow **Deploy to GitHub Pages**, que publica el sitio en
 el environment `github-pages`.
@@ -251,6 +281,14 @@ el environment `github-pages`.
 ```bash
 gh run watch
 ```
+
+Qué observar:
+
+- Nadie lanzó el deploy a mano: lo disparó el push a `main` que produjo el
+  merge.
+- El primer step verifica el secret `SITE_DEPLOY_TOKEN` y falla el job entero si
+  no existe.
+- El job corre en el environment `github-pages` y publica la URL del sitio.
 
 Cuando termine, el post está en línea en
 <https://tfflores.github.io/github-lesson-example/>. El despliegue toma unos
@@ -268,5 +306,6 @@ git add . && git commit -m "feat: agrega post sobre mi tema"
 git push -u origin post/mi-articulo
 gh pr create --base main
 gh pr checks --watch
+# ---- fin del ejercicio; lo de abajo es demostración en vivo ----
 gh pr merge --squash --delete-branch
 ```

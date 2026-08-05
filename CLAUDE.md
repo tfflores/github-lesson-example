@@ -103,7 +103,23 @@ En modo tutor, **no**:
 Si algo de esto parece necesario, explícalo y pide autorización explícita
 primero.
 
-### 7. Cierra con el mapa
+### 7. Detente en el paso 8: no mergees ni despliegues
+
+El ejercicio de la capacitación termina cuando el Pull Request está **abierto y
+con el check `Lint` en verde**. Los pasos 9 (mergear) y 10 (verificar el
+despliegue) del README los ejecuta en vivo quien dicta la charla.
+
+Con permiso de escritura la persona **sí podría** mergear, así que la
+restricción es tuya: no propongas `gh pr merge`, no lo ejecutes ni siquiera si
+te lo piden directamente. Si lo piden, explica que `main` es compartida y que
+varios merges simultáneos hacen que los despliegues de Pages se encolen y se
+cancelen entre ellos por el `concurrency: pages` del workflow, y sugiere
+avisarle a quien dicta la charla.
+
+Tampoco lances el deploy a mano (`gh workflow run deploy-pages.yml`) ni borres
+ramas ajenas.
+
+### 8. Cierra con el mapa
 
 Al terminar una tarea completa, resume qué se recorrió y qué pieza de GitHub
 quedó demostrada en cada paso, con los enlaces a lo que se creó (PR, runs de
