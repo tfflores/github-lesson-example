@@ -6,19 +6,21 @@ ficticio.
 
 ## Qué se demuestra aquí
 
-| Tema                  | Dónde verlo                                            |
-| --------------------- | ------------------------------------------------------ |
-| Repositorio público   | Este repo                                              |
-| Ramas                 | `post/tipos-de-vigas`, `post/aceros-estructurales`     |
-| Ciclo de Pull Request | PRs #1 (mergeado) y #2 (abierto)                       |
-| Actions — lint        | `.github/workflows/lint.yml` (corre en `pull_request`) |
-| Actions — deploy      | `.github/workflows/deploy-pages.yml` (corre en `main`) |
-| GitHub Pages          | Publicado desde Actions                                |
-| CODEOWNERS            | `.github/CODEOWNERS`                                   |
-| Plantilla de PR       | `.github/pull_request_template.md`                     |
-| Environments          | `github-pages`, usado por el workflow de deploy        |
-| Ruleset               | Protección de `main`: PR obligatorio + check `Lint`    |
-| Releases              | Tag `v1.0.0`                                           |
+| Tema                  | Dónde verlo                                             |
+| --------------------- | ------------------------------------------------------- |
+| Repositorio público   | Este repo                                               |
+| Ramas                 | `post/tipos-de-vigas`, `post/aceros-estructurales`      |
+| Ciclo de Pull Request | PRs #1 (mergeado) y #2 (abierto)                        |
+| Actions — lint        | `.github/workflows/lint.yml` (corre en `pull_request`)  |
+| Actions — deploy      | `.github/workflows/deploy-pages.yml` (corre en `main`)  |
+| GitHub Pages          | Publicado desde Actions                                 |
+| CODEOWNERS            | `.github/CODEOWNERS`                                    |
+| Plantilla de PR       | `.github/pull_request_template.md`                      |
+| Environments          | `github-pages`, usado por el workflow de deploy         |
+| Ruleset               | Protección de `main`: PR obligatorio + check `Lint`     |
+| Releases              | Tag `v1.0.0`                                            |
+| Secrets               | `SITE_DEPLOY_TOKEN`, exigido por el workflow de deploy  |
+| Dependabot            | `.github/dependabot.yml` + alertas sobre `package.json` |
 
 ## Estructura
 
@@ -28,9 +30,72 @@ posts/                            un archivo HTML por publicación
 assets/styles.css                 estilos del sitio
 .prettierrc                       configuración del formateador
 CLAUDE.md                         instrucciones para Claude Code (modo tutor)
+package.json                      scripts y dependencias de desarrollo
 .github/CODEOWNERS                dueños de código
+.github/dependabot.yml            configuración de Dependabot
 .github/pull_request_template.md  plantilla de PR
 .github/workflows/                lint y deploy
+```
+
+## Secrets
+
+El workflow de deploy exige el secret **`SITE_DEPLOY_TOKEN`**. Es puramente
+demostrativo: el workflow verifica que exista y **no hace nada con su valor**,
+pero si falta, el job falla en el primer step y no se publica nada.
+
+Para configurarlo:
+
+```bash
+gh secret set SITE_DEPLOY_TOKEN --body "valor-de-demostracion"
+```
+
+O desde la interfaz: **Settings → Secrets and variables → Actions → New
+repository secret**.
+
+Para demostrar la falla en vivo, bórralo y vuelve a lanzar el deploy:
+
+```bash
+gh secret delete SITE_DEPLOY_TOKEN
+gh workflow run deploy-pages.yml
+gh run watch
+```
+
+Nota didáctica: el step imprime el largo del secret y luego intenta imprimir su
+valor, para mostrar que GitHub lo enmascara automáticamente en los logs como
+`***`. Aun así, **nunca** hagas esto con un secret real: existen formas de
+filtrar valores enmascarados, y los logs de un repo público son visibles para
+cualquiera.
+
+## Dependabot
+
+`.github/dependabot.yml` configura dos ecosistemas: las dependencias npm de
+`package.json` y las versiones de las actions usadas en los workflows.
+
+⚠️ **Las `devDependencies` de `package.json` están desactualizadas a
+propósito.** Son versiones antiguas con advisories públicos ya corregidos hace
+años, puestas ahí para que Dependabot levante alertas de seguridad y abra Pull
+Requests durante la capacitación:
+
+| Paquete      | Versión fijada | Problema conocido                    |
+| ------------ | -------------- | ------------------------------------ |
+| `lodash`     | 4.17.15        | Prototype pollution (CVE-2020-8203)  |
+| `minimist`   | 1.2.0          | Prototype pollution (CVE-2020-7598)  |
+| `handlebars` | 4.0.11         | Varias, incluida ejecución de código |
+
+**Por qué esto no representa un riesgo real acá:** este repo no tiene proceso de
+build ni código JavaScript propio. Ninguno de esos paquetes se instala en CI —
+los workflows usan `npx --yes prettier@3`, que descarga Prettier al vuelo—, y
+ninguno se importa desde el sitio. GitHub Pages sirve HTML y CSS estáticos, sin
+runtime de Node. Las tres alertas son sobre código que nunca se descarga ni se
+ejecuta: existen solo como texto en `package.json`.
+
+Dónde verlas: **Security → Dependabot alerts**, y los PRs que abra en la pestaña
+**Pull requests**.
+
+Cuando termine la capacitación, para dejar el repo limpio:
+
+```bash
+npx --yes npm-check-updates -u   # o edita package.json a mano
 ```
 
 ## Desarrollo local
