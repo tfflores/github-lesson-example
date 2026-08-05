@@ -22,6 +22,21 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      # Demostración de secrets: el deploy exige que el secret exista, pero no
+      # hace nada con su valor. Si falta, el job falla acá mismo y no se publica
+      # nada. Créalo en Settings → Secrets and variables → Actions, o con:
+      #   gh secret set SITE_DEPLOY_TOKEN --body "cualquier-valor"
+      - name: Verificar secret requerido
+        env:
+          SITE_DEPLOY_TOKEN: ${{ secrets.SITE_DEPLOY_TOKEN }}
+        run: |
+          if [ -z "$SITE_DEPLOY_TOKEN" ]; then
+            echo "::error title=Secret faltante::El secret SITE_DEPLOY_TOKEN no está configurado en este repositorio. Créalo en Settings → Secrets and variables → Actions (o con 'gh secret set SITE_DEPLOY_TOKEN') y vuelve a ejecutar este workflow."
+            exit 1
+          fi
+          echo "Secret SITE_DEPLOY_TOKEN presente (largo: ${#SITE_DEPLOY_TOKEN} caracteres)."
+          echo "Si lo imprimiéramos, GitHub lo enmascararía: $SITE_DEPLOY_TOKEN"
+
       - name: Checkout
         uses: actions/checkout@v4
 

@@ -148,3 +148,13 @@ Antes de "arreglar" algo que parece roto, considera que puede ser intencional:
   la protección se vea bloqueando de verdad.
 - Requiere **0 aprobaciones**, porque es una cuenta individual y nadie puede
   aprobar su propio PR.
+- Las **`devDependencies` de `package.json` están desactualizadas a propósito**
+  (`lodash@4.17.15`, `minimist@1.2.0`, `handlebars@4.0.11`), para que Dependabot
+  levante alertas de seguridad durante la capacitación. **No las actualices por
+  iniciativa propia**, aunque veas las alertas. No hay riesgo real: no se
+  instalan en CI, no se importan desde ningún archivo y el sitio es HTML y CSS
+  estáticos sin runtime de Node.
+- El workflow de deploy **exige el secret `SITE_DEPLOY_TOKEN`** y falla si
+  falta, aunque no usa su valor para nada. Es una demostración de secrets, no un
+  bug. Si el deploy falla por esto, la solución es crear el secret, no eliminar
+  el step de verificación.

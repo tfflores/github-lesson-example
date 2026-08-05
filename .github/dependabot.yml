@@ -1,0 +1,27 @@
+version: 2
+updates:
+  # Dependencias npm declaradas en package.json.
+  # Nota: las versiones ancladas en devDependencies están desactualizadas a
+  # propósito, para que Dependabot levante alertas de seguridad y abra Pull
+  # Requests durante la capacitación. Ver README, sección "Dependabot".
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore
+      include: scope
+    labels:
+      - dependencies
+
+  # Versiones de las actions usadas en los workflows.
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: chore
+    labels:
+      - dependencies
+      - github-actions
