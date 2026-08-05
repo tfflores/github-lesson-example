@@ -22,3 +22,6 @@ Pasos concretos para verificar el cambio. Por ejemplo:
 - [ ] Corrí `npx --yes prettier@3 --write .` y el formato quedó limpio
 - [ ] El check `Lint` está en verde
 - [ ] Revisé el sitio en el navegador
+- [ ] **Dejo este PR abierto: no lo mergeo.** El merge y el despliegue (pasos 9
+      y 10 del README) son demostración en vivo a cargo de quien dicta la
+      capacitación
